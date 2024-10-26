@@ -1,8 +1,8 @@
 package middleware
 
 import (
+	"aws-sns-local-go/domain"
 	"errors"
-	"go-app-template/domain"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/gommon/log"

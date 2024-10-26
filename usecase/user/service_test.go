@@ -1,10 +1,10 @@
 package user_test
 
 import (
-	"go-app-template/domain"
-	"go-app-template/domain/value"
-	"go-app-template/usecase/mocks"
-	"go-app-template/usecase/user"
+	"aws-sns-local-go/domain"
+	"aws-sns-local-go/domain/value"
+	"aws-sns-local-go/usecase/mocks"
+	"aws-sns-local-go/usecase/user"
 	"testing"
 
 	"github.com/stretchr/testify/assert"

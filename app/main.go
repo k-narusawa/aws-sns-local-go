@@ -1,11 +1,11 @@
 package main
 
 import (
-	"go-app-template/internal/controller/rest"
-	"go-app-template/internal/controller/web"
-	"go-app-template/internal/gateway/repository"
-	"go-app-template/usecase/todo"
-	"go-app-template/usecase/user"
+	"aws-sns-local-go/internal/controller/rest"
+	"aws-sns-local-go/internal/controller/web"
+	"aws-sns-local-go/internal/gateway/repository"
+	"aws-sns-local-go/usecase/todo"
+	"aws-sns-local-go/usecase/user"
 	"html/template"
 	"io"
 	"log"

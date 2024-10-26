@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"go-app-template/domain"
-	"go-app-template/domain/value"
+	"aws-sns-local-go/domain"
+	"aws-sns-local-go/domain/value"
 )
 
 var (

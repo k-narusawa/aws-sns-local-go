@@ -1,9 +1,9 @@
 package todo
 
 import (
-	"go-app-template/domain"
-	"go-app-template/domain/repository"
-	"go-app-template/domain/value"
+	"aws-sns-local-go/domain"
+	"aws-sns-local-go/domain/repository"
+	"aws-sns-local-go/domain/value"
 )
 
 type Service struct {

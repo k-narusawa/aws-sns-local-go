@@ -1,8 +1,8 @@
 package mocks
 
 import (
-	"go-app-template/domain"
-	"go-app-template/usecase/user"
+	"aws-sns-local-go/domain"
+	"aws-sns-local-go/usecase/user"
 
 	"github.com/stretchr/testify/mock"
 )
