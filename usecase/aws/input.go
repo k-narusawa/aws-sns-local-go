@@ -1,8 +1,20 @@
 package aws
 
 type CreateTopicInput struct {
-	Name                 string `json:"name"`
-	Attributes           string `json:"attributes"`
-	Tags                 string `json:"tags"`
-	DataProtectionPolicy string `json:"data_protection_policy"`
+	Name                 string
+	Attributes           string
+	Tags                 string
+	DataProtectionPolicy string
+}
+
+type PublishInput struct {
+	TopicArn               string
+	TargetArn              string
+	PhoneNumber            string
+	Message                string
+	Subject                string
+	MessageStructure       string
+	MessageAttributes      string
+	MessageDeduplicationId string
+	MessageGroupId         string
 }

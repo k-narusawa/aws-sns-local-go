@@ -37,3 +37,19 @@ type ListTopicsResult struct {
 type Member struct {
 	TopicArn string `xml:"TopicArn"`
 }
+
+type PublishOutput struct {
+	PublishResponse PublishResponse
+}
+
+type PublishResponse struct {
+	Xmlns            string          `xml:"xmlns,attr"`
+	PublishResult    []PublishResult `xml:"PublishResult"`
+	ResponseMetadata struct {
+		RequestId string `xml:"RequestId"`
+	} `xml:"ResponseMetadata"`
+}
+
+type PublishResult struct {
+	MessageId string `xml:"MessageId"`
+}

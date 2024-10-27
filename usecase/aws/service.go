@@ -7,12 +7,17 @@ import (
 )
 
 type Service struct {
-	TopicRepo domain.TopicRepository
+	TopicRepo   domain.TopicRepository
+	MessageRepo domain.MessageRepository
 }
 
-func NewService(topicRepo domain.TopicRepository) *Service {
+func NewService(
+	topicRepo domain.TopicRepository,
+	messageRepo domain.MessageRepository,
+) *Service {
 	return &Service{
-		TopicRepo: topicRepo,
+		TopicRepo:   topicRepo,
+		MessageRepo: messageRepo,
 	}
 }
 
@@ -58,6 +63,33 @@ func (s *Service) ListTopics() (ListTopicOutput, error) {
 		resp.ListTopicsResult.Topics.Members = append(resp.ListTopicsResult.Topics.Members, member)
 	}
 	out.ListTopicResponse = resp
+
+	return out, nil
+}
+
+func (s *Service) Publish(in PublishInput) (PublishOutput, error) {
+	message := domain.NewMessage(
+		in.TopicArn,
+		in.TargetArn,
+		in.Message,
+		in.Subject,
+		in.MessageStructure,
+		in.MessageAttributes,
+		in.MessageDeduplicationId,
+		in.MessageGroupId,
+	)
+
+	err := s.MessageRepo.Save(*message)
+	if err != nil {
+		return PublishOutput{}, err
+	}
+
+	out := PublishOutput{}
+	resp := PublishResponse{}
+	resp.Xmlns = "http://sns.amazonaws.com/doc/2010-03-31/"
+	resp.PublishResult = append(resp.PublishResult, PublishResult{MessageId: message.MessageId})
+	resp.ResponseMetadata.RequestId = uuid.New().String()
+	out.PublishResponse = resp
 
 	return out, nil
 }

@@ -7,4 +7,5 @@
 ```shell
 aws sns create-topic --name my-topic --endpoint-url http://localhost:8080
 aws sns list-topics --endpoint-url http://localhost:8080
+aws sns publish --phone-number +818092859633 --message test --endpoint-url http://localhost:8080
 ```

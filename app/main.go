@@ -48,7 +48,8 @@ func main() {
 	db := config.DBConnect()
 
 	topicRepo := repository.NewTopicRepository(db)
-	awsSvc := aws.NewService(topicRepo)
+	messageRepo := repository.NewMessageRepository(db)
+	awsSvc := aws.NewService(topicRepo, messageRepo)
 	rest.NewAwsHandler(e, awsSvc)
 
 	e.GET("/health", healthCheck)

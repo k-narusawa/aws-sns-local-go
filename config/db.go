@@ -14,6 +14,7 @@ func DBConnect() *gorm.DB {
 	}
 
 	db.AutoMigrate(&domain.Topic{})
+	db.AutoMigrate(&domain.Message{})
 
 	return db
 }

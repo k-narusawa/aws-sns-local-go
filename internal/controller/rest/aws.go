@@ -11,6 +11,7 @@ import (
 type AwsService interface {
 	CreateTopic(in aws.CreateTopicInput) (aws.CreateTopicOutput, error)
 	ListTopics() (aws.ListTopicOutput, error)
+	Publish(in aws.PublishInput) (aws.PublishOutput, error)
 }
 
 type AwsHandler struct {
@@ -47,6 +48,24 @@ func (h *AwsHandler) Sns(c echo.Context) error {
 			return middleware.HandleError(c, err)
 		}
 		return c.XML(200, out.ListTopicResponse)
+	case "Publish":
+		in := aws.PublishInput{
+			TopicArn:               c.FormValue("TopicArn"),
+			TargetArn:              c.FormValue("TargetArn"),
+			PhoneNumber:            c.FormValue("PhoneNumber"),
+			Message:                c.FormValue("Message"),
+			Subject:                c.FormValue("Subject"),
+			MessageStructure:       c.FormValue("MessageStructure"),
+			MessageAttributes:      c.FormValue("MessageAttributes"),
+			MessageDeduplicationId: c.FormValue("MessageDeduplicationId"),
+			MessageGroupId:         c.FormValue("MessageGroupId"),
+		}
+
+		out, err := h.AwsService.Publish(in)
+		if err != nil {
+			return middleware.HandleError(c, err)
+		}
+		return c.XML(200, out.PublishResponse)
 	default:
 		return c.JSON(400, "Invalid action")
 	}
