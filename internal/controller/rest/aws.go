@@ -10,6 +10,7 @@ import (
 
 type AwsService interface {
 	CreateTopic(in aws.CreateTopicInput) (aws.CreateTopicOutput, error)
+	ListTopics() (aws.ListTopicOutput, error)
 }
 
 type AwsHandler struct {
@@ -21,10 +22,10 @@ func NewAwsHandler(e *echo.Echo, awsService AwsService) {
 		AwsService: awsService,
 	}
 
-	e.POST("/", handler.CreateTopic)
+	e.POST("/", handler.Sns)
 }
 
-func (h *AwsHandler) CreateTopic(c echo.Context) error {
+func (h *AwsHandler) Sns(c echo.Context) error {
 	action := c.FormValue("Action")
 
 	switch action {
@@ -40,6 +41,12 @@ func (h *AwsHandler) CreateTopic(c echo.Context) error {
 
 		}
 		return c.XML(200, out.CreateTopicResponse)
+	case "ListTopics":
+		out, err := h.AwsService.ListTopics()
+		if err != nil {
+			return middleware.HandleError(c, err)
+		}
+		return c.XML(200, out.ListTopicResponse)
 	default:
 		return c.JSON(400, "Invalid action")
 	}
