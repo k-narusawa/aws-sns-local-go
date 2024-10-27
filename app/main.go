@@ -20,7 +20,7 @@ type Template struct {
 }
 
 const (
-	defaultAddress = "8080"
+	defaultAddress = ":8080"
 )
 
 func init() {
