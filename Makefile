@@ -2,7 +2,7 @@ dev:
 	go run ./app/main.go
 
 up: 
-	docker-compose up -d
+	docker-compose up
 
 down:
 	docker-compose down
