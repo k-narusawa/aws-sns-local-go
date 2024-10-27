@@ -1,5 +1,9 @@
 package aws
 
+type CreateTopicOutput struct {
+	CreateTopicResponse CreateTopicResponse
+}
+
 type CreateTopicResponse struct {
 	Xmlns             string              `xml:"xmlns,attr"`
 	CreateTopicResult []CreateTopicResult `xml:"CreateTopicResult"`

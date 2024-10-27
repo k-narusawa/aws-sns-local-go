@@ -9,7 +9,7 @@ import (
 )
 
 type AwsService interface {
-	CreateTopic(in aws.CreateTopicInput) (aws.CreateTopicResponse, error)
+	CreateTopic(in aws.CreateTopicInput) (aws.CreateTopicOutput, error)
 }
 
 type AwsHandler struct {
@@ -39,7 +39,7 @@ func (h *AwsHandler) CreateTopic(c echo.Context) error {
 			return middleware.HandleError(c, err)
 
 		}
-		return c.XML(200, out)
+		return c.XML(200, out.CreateTopicResponse)
 	default:
 		return c.JSON(400, "Invalid action")
 	}
