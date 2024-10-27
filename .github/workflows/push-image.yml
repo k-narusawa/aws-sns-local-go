@@ -32,4 +32,4 @@ jobs:
         with:
           push: true
           file: ./Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aws-ses-local-go:${{ env.TAG }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/aws-sns-local-go:${{ env.TAG }}
