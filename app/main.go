@@ -2,10 +2,7 @@ package main
 
 import (
 	"aws-sns-local-go/internal/controller/rest"
-	"aws-sns-local-go/internal/controller/web"
-	"aws-sns-local-go/internal/gateway/repository"
-	"aws-sns-local-go/usecase/todo"
-	"aws-sns-local-go/usecase/user"
+	"aws-sns-local-go/usecase/aws"
 	"html/template"
 	"io"
 	"log"
@@ -46,15 +43,8 @@ func main() {
 
 	e.Renderer = t
 
-	userRepo := repository.NewUserRepository()
-	todoRepo := repository.NewToDoRepository()
-	userSvc := user.NewService(userRepo)
-	todoSvc := todo.NewService(todoRepo, userRepo)
-
-	rest.NewUserHandler(e, userSvc)
-	rest.NewToDoHandler(e, todoSvc)
-
-	web.NewWebUserHandler(e, userSvc, todoSvc)
+	awsSvc := aws.NewService()
+	rest.NewAwsHandler(e, awsSvc)
 
 	e.GET("/health", healthCheck)
 
