@@ -4,7 +4,7 @@ RUN apk update && apk upgrade && \
     apk --update add git make bash build-base
 
 ENV GO111MODULE=on
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED=1
 
 WORKDIR /app
 
