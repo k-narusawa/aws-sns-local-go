@@ -71,6 +71,7 @@ func (s *Service) Publish(in PublishInput) (PublishOutput, error) {
 	message := domain.NewMessage(
 		in.TopicArn,
 		in.TargetArn,
+		in.PhoneNumber,
 		in.Message,
 		in.Subject,
 		in.MessageStructure,

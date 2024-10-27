@@ -10,6 +10,7 @@ type Message struct {
 	MessageId              string `json:"message_id",gorm:"primary_key"`
 	TopicArn               string `json:"topic_arn",gorm:"type:string"`
 	TargetArn              string `json:"target_arn",gorm:"type:string"`
+	PhoneNumber            string `json:"phone_number",gorm:"type:string"`
 	Message                string `json:"message",gorm:"type:string"`
 	Subject                string `json:"subject",gorm:"type:string"`
 	MessageStructure       string `json:"message_structure",gorm:"type:string"`
@@ -22,6 +23,7 @@ type Message struct {
 func NewMessage(
 	topicArn string,
 	targetArn string,
+	phoneNumber string,
 	message string,
 	subject string,
 	messageStructure string,
@@ -34,6 +36,7 @@ func NewMessage(
 		MessageId:              messageId,
 		TopicArn:               topicArn,
 		TargetArn:              targetArn,
+		PhoneNumber:            phoneNumber,
 		Message:                message,
 		Subject:                subject,
 		MessageStructure:       messageStructure,

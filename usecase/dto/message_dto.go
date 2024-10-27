@@ -4,6 +4,7 @@ type MessageDto struct {
 	MessageId              string `json:"message_id",gorm:"primary_key"`
 	TopicArn               string `json:"topic_arn",gorm:"type:string"`
 	TargetArn              string `json:"target_arn",gorm:"type:string"`
+	PhoneNumber            string `json:"phone_number",gorm:"type:string"`
 	Message                string `json:"message",gorm:"type:string"`
 	Subject                string `json:"subject",gorm:"type:string"`
 	MessageStructure       string `json:"message_structure",gorm:"type:string"`
