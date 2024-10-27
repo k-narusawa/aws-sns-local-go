@@ -1,9 +1,9 @@
 package domain
 
 type Topic struct {
-	TopicArn   string `json:"topic_arn",gorm:"primary_key"`
-	Attributes string `json:"attributes",gorm:"type:string"`
-	Tags       string `json:"tags",gorm:"type:string"`
+	TopicArn   string `gorm:"primary_key"`
+	Attributes string `gorm:"type:string"`
+	Tags       string `gorm:"type:string"`
 }
 
 func NewTopic(name string, attributes, tags string) *Topic {

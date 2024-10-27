@@ -11,3 +11,5 @@ tmp_app/
 tmp/
 cover.*
 out/
+
+sns.db
