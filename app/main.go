@@ -39,6 +39,7 @@ func main() {
 	t := &Template{
 		templates: template.Must(template.ParseGlob("views/*.html")),
 	}
+	e.Static("/", "views")
 
 	e.Use(middleware.CORS())
 	e.Use(middleware.Logger())
