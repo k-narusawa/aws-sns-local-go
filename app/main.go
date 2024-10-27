@@ -1,7 +1,9 @@
 package main
 
 import (
+	"aws-sns-local-go/config"
 	"aws-sns-local-go/internal/controller/rest"
+	"aws-sns-local-go/internal/gateway/repository"
 	"aws-sns-local-go/usecase/aws"
 	"html/template"
 	"io"
@@ -43,7 +45,10 @@ func main() {
 
 	e.Renderer = t
 
-	awsSvc := aws.NewService()
+	db := config.DBConnect()
+
+	topicRepo := repository.NewTopicRepository(db)
+	awsSvc := aws.NewService(topicRepo)
 	rest.NewAwsHandler(e, awsSvc)
 
 	e.GET("/health", healthCheck)

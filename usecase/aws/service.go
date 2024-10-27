@@ -7,10 +7,13 @@ import (
 )
 
 type Service struct {
+	TopicRepo domain.TopicRepository
 }
 
-func NewService() *Service {
-	return &Service{}
+func NewService(topicRepo domain.TopicRepository) *Service {
+	return &Service{
+		TopicRepo: topicRepo,
+	}
 }
 
 func (s *Service) CreateTopic(in CreateTopicInput) (CreateTopicResponse, error) {
@@ -19,6 +22,11 @@ func (s *Service) CreateTopic(in CreateTopicInput) (CreateTopicResponse, error) 
 		in.Attributes,
 		in.Tags,
 	)
+
+	err := s.TopicRepo.Save(*topic)
+	if err != nil {
+		return CreateTopicResponse{}, err
+	}
 
 	out := CreateTopicResponse{}
 	out.Xmlns = "http://sns.amazonaws.com/doc/2010-03-31/"
