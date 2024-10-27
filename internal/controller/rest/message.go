@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"aws-sns-local-go/usecase/dto"
 	"aws-sns-local-go/usecase/query"
 	"strconv"
 
@@ -17,6 +18,15 @@ func NewMessageHandler(e *echo.Echo, messageQuerySvc query.IMessageQuery) {
 	}
 
 	e.GET("/messages", handler.FindAll)
+}
+
+type MessagesResponse struct {
+	Page      int              `json:"page"`
+	Limit     int              `json:"limit"`
+	Size      int              `json:"size"`
+	TotalPage int              `json:"totalPage"`
+	TotalSize int              `json:"totalSize"`
+	Items     []dto.MessageDto `json:"items"`
 }
 
 func (h *MessageHandler) FindAll(c echo.Context) error {
@@ -41,5 +51,12 @@ func (h *MessageHandler) FindAll(c echo.Context) error {
 		return c.JSON(500, err)
 	}
 
-	return c.JSON(200, messages)
+	resp := MessagesResponse{
+		Page:  orgSize,
+		Limit: limit,
+		Size:  len(messages),
+		Items: messages,
+	}
+
+	return c.JSON(200, resp)
 }
