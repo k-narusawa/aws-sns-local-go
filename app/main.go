@@ -3,6 +3,7 @@ package main
 import (
 	"aws-sns-local-go/config"
 	"aws-sns-local-go/internal/controller/rest"
+	"aws-sns-local-go/internal/gateway/query"
 	"aws-sns-local-go/internal/gateway/repository"
 	"aws-sns-local-go/usecase/aws"
 	"html/template"
@@ -50,8 +51,12 @@ func main() {
 
 	topicRepo := repository.NewTopicRepository(db)
 	messageRepo := repository.NewMessageRepository(db)
+
 	awsSvc := aws.NewService(topicRepo, messageRepo)
+	messageQSvc := query.NewMessageQueryService(db)
+
 	rest.NewAwsHandler(e, awsSvc)
+	rest.NewMessageHandler(e, messageQSvc)
 
 	e.GET("/health", healthCheck)
 
