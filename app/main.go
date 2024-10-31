@@ -52,9 +52,9 @@ func main() {
 	topicRepo := repository.NewTopicRepository(db)
 	messageRepo := repository.NewMessageRepository(db)
 
-	awsSvc := aws.NewService(topicRepo, messageRepo)
 	messageQSvc := query.NewMessageQueryService(db)
 	topicQSvc := query.NewTopicQueryService(db)
+	awsSvc := aws.NewService(topicRepo, messageRepo, topicQSvc)
 
 	rest.NewAwsHandler(e, awsSvc)
 	rest.NewMessageHandler(e, messageQSvc)

@@ -6,34 +6,39 @@ import (
 )
 
 var (
-	ErrUserNotFound = errors.New("user not found")
-	ErrToDoNotFound = errors.New("todo not found")
-	ErrUnexpected   = errors.New("unexpected error")
+	ErrUserNotFound  = errors.New("user not found")
+	ErrTopicNotFound = errors.New("topic not found")
+	ErrToDoNotFound  = errors.New("todo not found")
+	ErrUnexpected    = errors.New("unexpected error")
 )
 
 type ErrorCode int
 
 const (
 	ErrUserNotFoundCode ErrorCode = iota
+	ErrTopicNotFoundCode
 	ErrToDoNotFoundCode
 	ErrUnexpectedCode
 )
 
 var StatusMap = map[ErrorCode]int{
-	ErrUserNotFoundCode: 404,
-	ErrToDoNotFoundCode: 404,
-	ErrUnexpectedCode:   500,
+	ErrUserNotFoundCode:  404,
+	ErrToDoNotFoundCode:  404,
+	ErrTopicNotFoundCode: 404,
+	ErrUnexpectedCode:    500,
 }
 
 var ErrorCodeMap = map[ErrorCode]string{
-	ErrUserNotFoundCode: "404-001",
-	ErrToDoNotFoundCode: "404-002",
-	ErrUnexpectedCode:   "500-001",
+	ErrTopicNotFoundCode: "404-001",
+	ErrToDoNotFoundCode:  "404-002",
+	ErrUserNotFoundCode:  "404-003",
+	ErrUnexpectedCode:    "500-001",
 }
 
 var ErrorMassageMap = map[ErrorCode]string{
-	ErrUserNotFoundCode: "user not found.",
-	ErrToDoNotFoundCode: "todo not found.",
+	ErrUserNotFoundCode:  "user not found.",
+	ErrToDoNotFoundCode:  "todo not found.",
+	ErrTopicNotFoundCode: "topic not found.",
 }
 
 type Error struct {
@@ -50,6 +55,12 @@ func (e Error) Error() string {
 }
 
 func ToDomainError(err error) Error {
+	if err == ErrTopicNotFound {
+		return Error{
+			Code:    ErrTopicNotFoundCode,
+			Message: ErrorMassageMap[ErrTopicNotFoundCode],
+		}
+	}
 	if err == ErrUserNotFound {
 		return Error{
 			Code:    ErrUserNotFoundCode,
