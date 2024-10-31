@@ -2,6 +2,7 @@ package aws
 
 import (
 	"aws-sns-local-go/domain"
+	"aws-sns-local-go/usecase/query"
 
 	"github.com/google/uuid"
 )
@@ -9,15 +10,18 @@ import (
 type Service struct {
 	TopicRepo   domain.TopicRepository
 	MessageRepo domain.MessageRepository
+	TopicQSvc   query.TopicQueryService
 }
 
 func NewService(
 	topicRepo domain.TopicRepository,
 	messageRepo domain.MessageRepository,
+	topicQSvc query.TopicQueryService,
 ) *Service {
 	return &Service{
 		TopicRepo:   topicRepo,
 		MessageRepo: messageRepo,
+		TopicQSvc:   topicQSvc,
 	}
 }
 
@@ -79,6 +83,13 @@ func (s *Service) Publish(in PublishInput) (PublishOutput, error) {
 		in.MessageDeduplicationId,
 		in.MessageGroupId,
 	)
+
+	if message.PhoneNumber == "" {
+		topic, err := s.TopicQSvc.FindByTopicArn(in.TopicArn)
+		if err != nil || topic == nil {
+			return PublishOutput{}, domain.ErrTopicNotFound
+		}
+	}
 
 	err := s.MessageRepo.Save(*message)
 	if err != nil {
