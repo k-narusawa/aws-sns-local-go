@@ -54,9 +54,11 @@ func main() {
 
 	awsSvc := aws.NewService(topicRepo, messageRepo)
 	messageQSvc := query.NewMessageQueryService(db)
+	topicQSvc := query.NewTopicQueryService(db)
 
 	rest.NewAwsHandler(e, awsSvc)
 	rest.NewMessageHandler(e, messageQSvc)
+	rest.NewTopicHandler(e, topicQSvc)
 
 	e.GET("/health", healthCheck)
 
