@@ -1,20 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
-import {
-  Topic,
-  Message,
-  createTopic,
-  getTopics,
-  publishMessage,
-  getMessages,
-} from "./api/sns";
+import { Topic, Message, createTopic, getTopics, getMessages } from "./api/sns";
 
 function App() {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newTopic, setNewTopic] = useState("");
   const [selectedTopic, setSelectedTopic] = useState<Topic | null>(null);
-  const [newMessage, setNewMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const fetchTopics = useCallback(async () => {
@@ -32,14 +24,14 @@ function App() {
   const fetchMessages = useCallback(async () => {
     try {
       console.log("Fetching messages...");
-      const fetchedMessages = await getMessages(selectedTopic?.arn);
+      const fetchedMessages = await getMessages(selectedTopic?.topic_arn);
       console.log("Fetched messages:", fetchedMessages);
       setMessages(fetchedMessages || []);
     } catch (err) {
       setError("メッセージの取得に失敗しました");
       console.error("Error fetching messages:", err);
     }
-  }, [selectedTopic?.arn]);
+  }, [selectedTopic?.topic_arn]);
 
   useEffect(() => {
     fetchTopics();
@@ -61,19 +53,6 @@ function App() {
         fetchTopics();
       } catch (err) {
         setError("トピックの作成に失敗しました");
-        console.error(err);
-      }
-    }
-  };
-
-  const handleSendMessage = async () => {
-    if (selectedTopic && newMessage.trim()) {
-      try {
-        await publishMessage(selectedTopic.arn, newMessage.trim());
-        setNewMessage("");
-        fetchMessages();
-      } catch (err) {
-        setError("メッセージの送信に失敗しました");
         console.error(err);
       }
     }
@@ -103,14 +82,14 @@ function App() {
           <ul className="topics-list">
             {topics.map((topic) => (
               <li
-                key={topic.arn}
+                key={topic.topic_arn}
                 className={`topic-item ${
-                  selectedTopic?.arn === topic.arn ? "selected" : ""
+                  selectedTopic?.topic_arn === topic.topic_arn ? "selected" : ""
                 }`}
                 onClick={() => setSelectedTopic(topic)}
               >
-                <span className="topic-name">{topic.name}</span>
-                <span className="topic-arn">{topic.arn}</span>
+                <span className="topic-arn">{topic.topic_arn}</span>
+                {topic.tags && <span className="topic-tags">{topic.tags}</span>}
               </li>
             ))}
           </ul>
@@ -118,18 +97,7 @@ function App() {
 
         <section className="messages-section">
           <h2>Messages</h2>
-          <div className="message-form">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="メッセージを入力"
-              disabled={!selectedTopic}
-            />
-            <button onClick={handleSendMessage} disabled={!selectedTopic}>
-              メッセージを送信
-            </button>
-          </div>
+
           <ul className="messages-list">
             {messages.map((msg) => (
               <li key={msg.message_id} className="message-item">
