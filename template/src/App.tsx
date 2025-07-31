@@ -1,6 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import "./App.css";
-import { Topic, Message, createTopic, getTopics, getMessages } from "./api/sns";
+import {
+  Topic,
+  Message,
+  CreateTopicRequest,
+  createTopic,
+  getTopics,
+  getMessages,
+} from "./api/sns";
 
 function App() {
   const [topics, setTopics] = useState<Topic[]>([]);
@@ -48,7 +55,10 @@ function App() {
   const handleCreateTopic = async () => {
     if (newTopic.trim()) {
       try {
-        await createTopic(newTopic.trim());
+        const request: CreateTopicRequest = {
+          Name: newTopic.trim(),
+        };
+        await createTopic(request);
         setNewTopic("");
         fetchTopics();
       } catch (err) {

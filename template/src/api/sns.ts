@@ -33,15 +33,40 @@ export interface MessagesResponse {
   items: Message[];
 }
 
-export const createTopic = async (name: string): Promise<Topic> => {
-  const response = await fetch(`${API_BASE_URL}/topics`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ name }),
+export interface CreateTopicRequest {
+  Name: string;
+  Tags?: string;
+  Attributes?: string;
+}
+
+export const createTopic = async (
+  request: CreateTopicRequest
+): Promise<Topic> => {
+  const params = new URLSearchParams({
+    Action: "CreateTopic",
+    ...request,
   });
-  return response.json();
+
+  const response = await fetch(`${API_BASE_URL}/?${params.toString()}`, {
+    method: "POST",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to create topic: ${response.statusText}`);
+  }
+
+  const data = await response.text();
+  // XMLレスポンスからTopicArnを抽出
+  const match = data.match(/<TopicArn>(.*?)<\/TopicArn>/);
+  if (!match) {
+    throw new Error("Failed to parse topic ARN from response");
+  }
+
+  return {
+    topic_arn: match[1],
+    attributes: "",
+    tags: request.Tags || "",
+  };
 };
 
 export const getTopics = async (): Promise<Topic[]> => {
