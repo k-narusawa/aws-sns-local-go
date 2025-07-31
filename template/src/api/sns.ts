@@ -1,5 +1,3 @@
-const API_BASE_URL = "http://localhost:8080";
-
 export interface Topic {
   name: string;
   arn: string;
@@ -29,7 +27,7 @@ export interface MessagesResponse {
 }
 
 export const createTopic = async (name: string): Promise<Topic> => {
-  const response = await fetch(`${API_BASE_URL}/topics`, {
+  const response = await fetch(`/topics`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +41,7 @@ export const createTopic = async (name: string): Promise<Topic> => {
 };
 
 export const getTopics = async (): Promise<Topic[]> => {
-  const response = await fetch(`${API_BASE_URL}/topics`);
+  const response = await fetch(`/topics`);
   if (!response.ok) {
     throw new Error(`Failed to fetch topics: ${response.statusText}`);
   }
@@ -55,7 +53,7 @@ export const publishMessage = async (
   topicArn: string,
   message: string
 ): Promise<void> => {
-  const response = await fetch(`${API_BASE_URL}/messages`, {
+  const response = await fetch(`/messages`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -72,8 +70,8 @@ export const publishMessage = async (
 
 export const getMessages = async (topicArn?: string): Promise<Message[]> => {
   const url = topicArn
-    ? `${API_BASE_URL}/messages?topic_arn=${encodeURIComponent(topicArn)}`
-    : `${API_BASE_URL}/messages`;
+    ? `/messages?topic_arn=${encodeURIComponent(topicArn)}`
+    : `/messages`;
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Failed to fetch messages: ${response.statusText}`);
