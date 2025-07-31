@@ -141,13 +141,19 @@ function App() {
                 </div>
                 <div className="message-details">
                   {msg.topic_arn && (
-                    <span className="message-topic-arn">Topic: {msg.topic_arn}</span>
+                    <span className="message-topic-arn">
+                      Topic: {msg.topic_arn}
+                    </span>
                   )}
                   {msg.phone_number && (
-                    <span className="message-phone">Phone: {msg.phone_number}</span>
+                    <span className="message-phone">
+                      Phone: {msg.phone_number}
+                    </span>
                   )}
                   {msg.subject && (
-                    <span className="message-subject">Subject: {msg.subject}</span>
+                    <span className="message-subject">
+                      Subject: {msg.subject}
+                    </span>
                   )}
                 </div>
                 <span className="message-content">{msg.message}</span>
