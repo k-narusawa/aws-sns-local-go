@@ -14,8 +14,8 @@ func NewMessageQueryService(db *gorm.DB) *MessageQueryService {
 	return &MessageQueryService{db}
 }
 
-func (s *MessageQueryService) FindAll(limit, offset int) ([]dto.MessageDto, error) {
+func (s *MessageQueryService) FindAll(phoneNumber string, limit, offset int) ([]dto.MessageDto, error) {
 	var messages []dto.MessageDto
-	err := s.db.Limit(limit).Offset(offset).Order("published_at desc").Find(&messages).Error
+	err := s.db.Where("phone_number = ?", phoneNumber).Limit(limit).Offset(offset).Order("published_at desc").Find(&messages).Error
 	return messages, err
 }

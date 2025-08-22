@@ -45,8 +45,9 @@ func (h *MessageHandler) FindAll(c echo.Context) error {
 	isize := orgSize - 1
 	limit, _ := strconv.Atoi(qLimit)
 	offset := isize * limit
+	phoneNumber := c.QueryParam("phoneNumber")
 
-	messages, err := h.MessageQuerySvc.FindAll(limit, offset)
+	messages, err := h.MessageQuerySvc.FindAll(phoneNumber, limit, offset)
 	if err != nil {
 		return c.JSON(500, err)
 	}
